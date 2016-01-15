@@ -4,8 +4,8 @@
 // Game
 
 $tile-size: 10px;
-$game-width: 50;
-$game-height: 50;
+$game-width: 55;
+$game-height: 55;
 
 // Colours
 
@@ -66,7 +66,8 @@ body>div>div{
 	float: left;
 	margin-right: 1rem;
 }
-.snake{
+.snake,
+.snake-sample{
 	background: green;
 	width: $tile-size;
 	height: $tile-size;
@@ -90,7 +91,7 @@ body>div>div{
 }
 
 // Buttons
-#new-game{
+.button{
 	float: left;
 	cursor: pointer;
 	font-size: 1rem;
@@ -102,4 +103,7 @@ body>div>div{
 	&:hover{
 		background: $light-blue;
 	}
+	
+}
+#new-game{
 }

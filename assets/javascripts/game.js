@@ -1,5 +1,5 @@
 var game = document.querySelector('#game'); // Set the game object
-var tile = document.querySelector('.snake'); // Set a sample tile
+var tile = document.querySelector('.snake-sample'); // Set a sample tile
 
 var newGameButton = document.querySelector('#new-game'); // Set the new game button
 newGameButton.addEventListener('click', new_game);
@@ -17,6 +17,7 @@ function random_position(max) {
 }
 
 function new_game() {
+	// window.clearInterval(timer);
 	game.innerHTML = ""; // Clear game object of all elements
 
 	// Set Snake start position
@@ -27,6 +28,14 @@ function new_game() {
 	// Place Snake in the window
 	game.insertAdjacentHTML('afterbegin', snakeTile);
 	
+	// var newXY = startXY;
+	
+	// var timer = window.setInterval(function(){
+	// 	newXY[0] + 10;
+	// 	newXY[1] + 10;
+	// 	console.log(newXY);
+	// }, 500);
+
 	console.log("---- Debug Messages ----");
 	console.log("Game Width: " + gameSize_X + "px");
 	console.log("Game Height: " + gameSize_Y + "px");
