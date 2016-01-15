@@ -1,13 +1,22 @@
 ---
 ---
-// Game Config
+// CONFIG
+// Game
 
 $tile-size: 10px;
 $game-width: 50;
 $game-height: 50;
 
-// End Game Config
+// Colours
 
+$blue: #0076E3;
+
+// END CONFIG
+
+
+// Calculations
+
+$light-blue: lighten($blue, 10%);
 $game-window-width: $tile-size * $game-width;
 $game-window-height: $tile-size * $game-height;
 
@@ -55,8 +64,7 @@ body>div>div{
 	height: $game-window-height;
 	background-color: #eee;
 	float: left;
-}
-#game>div{
+	margin-right: 1rem;
 }
 .snake{
 	background: green;
@@ -79,4 +87,19 @@ body>div>div{
 }
 .debug_overlays{
 	color: #fff;
+}
+
+// Buttons
+#new-game{
+	float: left;
+	cursor: pointer;
+	font-size: 1rem;
+	background: $blue;
+	color: #fff;
+	padding: 0.5rem 1rem 0.5rem 1rem;
+	border-radius: 3px;
+	@include no_select;
+	&:hover{
+		background: $light-blue;
+	}
 }
