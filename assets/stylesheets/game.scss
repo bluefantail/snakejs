@@ -1,0 +1,82 @@
+---
+---
+// Game Config
+
+$tile-size: 10px;
+$game-width: 50;
+$game-height: 50;
+
+// End Game Config
+
+$game-window-width: $tile-size * $game-width;
+$game-window-height: $tile-size * $game-height;
+
+html, body{
+	font-family: 'Roboto', sans-serif;
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	display: table;
+	overflow: hidden;
+}
+
+@mixin no_select{
+	-moz-user-select: none;
+  	-webkit-user-select: none;
+  	-ms-user-select: none;
+}
+
+h1{
+	width: 100%;
+	font-size: 4rem;
+	margin: 1rem 0 1rem 0;
+}
+h2{
+	margin: 1rem 0 2rem 0;
+	font-style: italic;
+	font-size: 1rem;
+	color: #555;
+}
+body>div{
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0 2rem 0 2rem;
+}
+body>div>div{
+	width: 100%;
+	max-width: 1200px;
+	margin: 0px auto;
+}
+#game{
+	width: $game-window-width;
+	height: $game-window-height;
+	background-color: #eee;
+	float: left;
+}
+#game>div{
+}
+.snake{
+	background: green;
+	width: $tile-size;
+	height: $tile-size;
+	float: left;
+	color: green;
+	font-size: 6px;
+	line-height: 10px;
+	text-align: center;
+	font-weight: 400;
+	overflow: hidden;
+	position: relative;
+	@include no_select;
+}
+.hide{
+	opacity: 0;
+	position: absolute;
+	top: -10000px;
+}
+.debug_overlays{
+	color: #fff;
+}
