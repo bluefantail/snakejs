@@ -1,5 +1,5 @@
 var currentGame;
-var gameSpeed = 500; // Set the game movement speed in milliseconds
+var gameSpeed = 50; // Set the game movement speed in milliseconds
 var direction = "right"; // Set the default direction
 var startLength = 15; // Starting snake length
 
