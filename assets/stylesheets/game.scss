@@ -110,6 +110,16 @@ body>div>div{
 .debug_overlays{
 	color: #fff;
 }
+#controls{
+	float: left;
+}
+#score{
+	clear: both;
+	float: left;
+	display: block;
+	padding: 1rem 0 1rem 0;
+}
+
 
 // Buttons
 .button{
