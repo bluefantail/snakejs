@@ -69,6 +69,7 @@ body>div>div{
 	background-color: #eee;
 	float: left;
 	margin-right: 1rem;
+	position: relative;
 }
 .snake,
 .snake-sample{
@@ -82,7 +83,7 @@ body>div>div{
 	text-align: center;
 	font-weight: 400;
 	overflow: hidden;
-	position: relative;
+	position: absolute;
 	@include no_select;
 }
 .hide{
