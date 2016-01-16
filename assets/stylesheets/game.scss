@@ -3,9 +3,9 @@
 // CONFIG
 // Game
 
-$tile-size: 10px;
-$game-width: 55;
-$game-height: 55;
+$tile-size: 8px;
+$game-width: 60;
+$game-height: 60;
 
 // Colours
 
@@ -36,6 +36,22 @@ body{
 	-moz-user-select: none;
   	-webkit-user-select: none;
   	-ms-user-select: none;
+}
+
+@mixin animate($duration: .06s){		
+	// Animates all properties of an object 					
+	-webkit-transition:
+		all $duration linear;
+	-moz-transition: 
+		all $duration linear;
+	-o-transition: 
+		all $duration linear;
+	transition: 
+		all $duration linear;
+}
+
+.animate{
+	@include animate;
 }
 
 h1{
@@ -71,7 +87,7 @@ body>div>div{
 	margin-right: 1rem;
 	position: relative;
 }
-.snake,
+.snake-bit,
 .snake-sample{
 	background: green;
 	width: $tile-size;
