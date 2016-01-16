@@ -1,5 +1,5 @@
 var currentGame;
-var gameSpeed = 80; // Set the game movement speed in milliseconds
+var gameSpeed = 60; // Set the game movement speed in milliseconds
 var direction = "right"; // Set the default direction
 var startLength = 8; // Starting snake length
 
@@ -56,7 +56,7 @@ function new_game() {
 	// FUNCTIONS
 	// Return all the Snake pieces as an object
 	function get_snake() {
-		var snakeObjects = document.querySelectorAll('.snake');
+		var snakeObjects = document.querySelectorAll('.snake-bit');
 		return snakeObjects;
 	}
 	// Updates the xy of a snake bit
@@ -67,7 +67,7 @@ function new_game() {
 	// END FUNCTIONS
 
 	// Build the Snake
-	var snakeTile = '<div class="snake"></div>'; // Create a Snake Tile
+	var snakeTile = '<div class="snake-bit"></div>'; // Create a Snake Tile
 	var length = startLength; // Set length of the snake to building
 	var bit = 0; // Set starting bit to 0
 	do{
@@ -79,34 +79,35 @@ function new_game() {
 	
 	// Set starting position of the snake
 	Array.prototype.forEach.call(snake, function(snakeBit){
-		console.log("Bit Number: " + bit);
 		bitXY = [startXY[0] - (tileSize * bit), startXY[1]] // Calc each bit position
-		console.log("BitX: " + bitXY[0] + ", BitY: " + bitXY[1]);
 		update_xy(snakeBit, bitXY); // Update the snake position
+		snakeBit.setAttribute("id", bit);
 		bit++; // Increment the bit calculation
 	});
 
 	// Movement
 	// Movement function calculates new positions
 	function move(snake){
+		snake = get_snake(); // Get the new snake
 		Array.prototype.forEach.call(snake, function(snakeBit){
 			currentXY = [parseInt(snakeBit.style.left, 10), parseInt(snakeBit.style.top, 10)];
+			bitXY = currentXY;
 			switch (direction){
 				case "right":
 					bitXY[0] = currentXY[0] + tileSize;
-					bitXY[0] = bitXY[0] > gameSize_X ? 0 : bitXY[0];
+					if ( bitXY[0] > gameSize_X ) bitXY[0] = 0; // Check to see if snakeBit position needs reseting
 					break;
 				case "left":
-					bitXY = [currentXY[0] - tileSize, currentXY[1]];
-					bitXY[0] = bitXY[0] < 0 ? gameSize_X : bitXY[0];
+					bitXY[0] = currentXY[0] - tileSize;
+					if ( bitXY[0] < 0 ) bitXY[0] = gameSize_X; // Check to see if snakeBit position needs reseting
 					break;
 				case "down":
-					bitXY = [currentXY[0], currentXY[1] + tileSize];
-					bitXY[1] = bitXY[1] > gameSize_Y ? 0 : bitXY[1];
+					bitXY[1] = currentXY[1] + tileSize;
+					if ( bitXY[1] > gameSize_Y ) bitXY[1] = 0;
 					break;
 				case "up":
-					bitXY = [currentXY[0], currentXY[1] - tileSize];
-					bitXY[1] = bitXY[1] < 0 ? gameSize_Y : bitXY[1];
+					bitXY[1] = currentXY[1] - tileSize;
+					if( bitXY[1] < 0 ) bitXY[1] = gameSize_Y;
 					break;
 			}
 			update_xy(snakeBit, bitXY); // Update the position of each bit
@@ -115,7 +116,6 @@ function new_game() {
 	
 	// Game Loop
 	var timer = window.setInterval(function(){
-		snake = get_snake(); // Get the new snake
 		move(snake);
 	}, gameSpeed);
 
