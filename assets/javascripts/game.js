@@ -1,11 +1,14 @@
 var currentGame;
-var gameSpeed = 50; // Set the game movement speed in milliseconds
+var gameSpeed = 60; // Set the game movement speed in milliseconds
 var direction = "right"; // Set the default direction
-var startLength = 15; // Starting snake length
+var startLength = 5; // Starting snake length
+var snakeTile = '<div class="snake-bit"></div>'; // Define a Snake Tile
+var	foodTile = '<div class="food"></div>'; // Define a Food Tile
 
 var game = document.querySelector('#game'); // Set the game object
 var tile = document.querySelector('.snake-sample'); // Set a sample tile
 var messages = document.querySelector('#messages');
+var scoreBoard = document.querySelector('#score-board');
 
 // Set the size of a tile
 var tileSize = parseInt(getComputedStyle(tile).height, 10);
@@ -41,59 +44,72 @@ function handle_keys(event) {
 		new_game();
 	}
 }
-
-// Place items randomly in the game window
-function random_position(max) {
-	return Math.round(((Math.random() * (max - 0) + 0) / 10)) * 10;
+// Generate a random number
+function random_number(max) {
+	// Returns a random position rounded to the nearest tile size
+	return Math.round(((Math.random() * (max - 0) + 0) / tileSize)) * tileSize;
+}
+// Generate a random position on the grid
+function random_xy() {
+	return [random_number(gameSize_X), random_number(gameSize_Y)]
 }
 
 function new_game() {
-	var snake; // Define a snake
-	// var snakeObjects; // For the nodetree of elements that will be pased to snake later
 	currentGame = true; // Game in progress
+	var score = 0;
+	
+	var snake; // Define a snake
+	var	shouldGrow = false;
+	var	startXY = random_xy(); // Set Snake start position
+	
 	game.innerHTML = ""; // Clear game object of all elements
+	scoreBoard.innerHTML = ""; // Clear score and set placeholder
 	messages.innerHTML = "Snake so hungry."; // Clear messages and set placeholder
-	score.innerHTML = "<b>Score </b>"; // Clear score and set placeholder
-	var	startXY = [random_position(gameSize_X), random_position(gameSize_Y)]; // Set Snake start position
+
+	var food;
+	var	foodXY;
 					
 	// FUNCTIONS
 	// Return all the Snake pieces as an object
 	function get_snake() {
-		var snakeObjects = document.querySelectorAll('.snake-bit');
-		return snakeObjects;
+		snake = document.querySelectorAll('.snake-bit'); // Get all the snake bits
+		snakeHead = snake[0] // Get just the snakes head
+		headXY = [parseInt(snakeHead.style.left, 10), parseInt(snakeHead.style.top, 10)]; // Current head position
+	}
+	function unpack_snake_bits() {
+		snakeBits = [];
+		Array.prototype.forEach.call(snake, function(snakeBit) {
+			snakeBits.push([parseInt(snakeBit.style.left, 10), parseInt(snakeBit.style.top, 10)]);		
+		});
 	}
 	// Updates the xy of a snake bit
 	function update_xy(item, newXY){
 		item.style.left = newXY[0] + "px"; // Update x
 		item.style.top = newXY[1] + "px"; // Update y
 	}
-	// END FUNCTIONS
+	function update_snake_position() {
+		bit = 0;
+		Array.prototype.forEach.call(snake, function(snakeBit) {
+			bitXY = snakeBits[bit]; // Get the bit XY for the particular index
+			update_xy(snakeBit, bitXY); // Update snake bit position
+			bit++; // Increment the bit number
+		})
+	}
+	function spawn_food() {
+		if (!food) {
+			game.insertAdjacentHTML('afterbegin', foodTile);
+			food = document.querySelector('.food');
+			foodXY = random_xy();
+			update_xy(food, foodXY);
+		}
 
-	// Build the Snake
-	var snakeTile = '<div class="snake-bit"></div>'; // Create a Snake Tile
-	var length = startLength; // Set length of the snake to building
-	var bit = 0; // Set starting bit to 0
-	do{
-		game.insertAdjacentHTML('afterbegin', snakeTile); // Place a Snake bit in the window
-		length--; // Move to the next bit
-	}while(length > 0);
-
-	snake = get_snake(); // Get the snake
-	
-	// Set starting position of the snake
-	Array.prototype.forEach.call(snake, function(snakeBit){
-		bitXY = [startXY[0] - (tileSize * bit), startXY[1]] // Calc each bit position
-		update_xy(snakeBit, bitXY); // Update the snake position
-		snakeBit.setAttribute("id", bit);
-		bit++; // Increment the bit calculation
-	});
-
-	// Movement
-	// Movement function calculates new positions
+	}
+	function update_score() {
+		score++; // Increment the score
+		scoreBoard.innerHTML = "" + score; // Update the score
+	}
 	function move(snake){
-		snake = get_snake(); // Get the new snake
-		snakeHead = snake[0]; // Get just the snakes head
-		headXY = [parseInt(snakeHead.style.left, 10), parseInt(snakeHead.style.top, 10)]; // Current head position
+		get_snake(); // Get the new snake
 		switch (direction){
 			case "right":
 				headXY[0] = headXY[0] + tileSize; // Calc new head position
@@ -112,34 +128,59 @@ function new_game() {
 				if( headXY[1] < 0 ) headXY[1] = gameSize_Y; // snake head position reset check
 				break;
 		}
-		// update_xy(snakeHead, headXY); // Update snake head position
-
-		snakeBits = [];
-		Array.prototype.forEach.call(snake, function(snakeBit) {
-			snakeBits.push([parseInt(snakeBit.style.left, 10), parseInt(snakeBit.style.top, 10)]);		
-		});
 
 		//Build the new snake
-		snakeBits = snakeBits.slice(0, -1); // Cut the head and tail off		
-		snakeBits.unshift(headXY); // Add the head
+		unpack_snake_bits(); // Get all the snake pieces
+		// Cut the tail off if the snake didn't grow	
+		if (shouldGrow) {
+			game.insertAdjacentHTML('beforeend', snakeTile); //
+			snakeBits.unshift(headXY); // Add the head
+			get_snake();
+			update_snake_position();
+			update_score();
+			shouldGrow = false;
+		}else{
+			snakeBits.pop();
+			snakeBits.unshift(headXY); // Add the head
+			update_snake_position();
+		}		
 
-		bit = 0;
-		Array.prototype.forEach.call(snake, function(snakeBit) {
-			bitXY = snakeBits[bit]; // Get the bit XY for the particular index
-			update_xy(snakeBit, bitXY); // Update snake bit position
-			bit++; // Increment the bit number
-		})
+		// Check for Food collisions
+		get_snake(); // Get new snake
+		if (headXY[0] == foodXY[0] && headXY[1] == foodXY[1]) shouldGrow = true; // Grow if snake ate food
+
+
+		console.log("Snake length: " + snake.length);
 
 	}
+	// END FUNCTIONS
+
+	// Build the initial Snake
+	var length = startLength; // Set length of the snake to building
+	var bit = 0; // Set starting bit to 0
+	do{
+		game.insertAdjacentHTML('afterbegin', snakeTile); // Place a Snake bit in the window
+		length--; // Move to the next bit
+	}while(length > 0);
+	// Set starting position of the initial snake
+	get_snake(); // Get the snake
+	Array.prototype.forEach.call(snake, function(snakeBit){
+		bitXY = [startXY[0] - (tileSize * bit), startXY[1]] // Calc each bit position
+		update_xy(snakeBit, bitXY); // Update the snake position
+		bit++; // Increment the bit calculation
+	});
 	
 	// Main Game Loop
 	var timer = window.setInterval(function(){
+		spawn_food();
 		move(snake);
 	}, gameSpeed);
 
-	console.log("---- Debug Messages ----");
+	console.log("---- New Game ----");
 	console.log("Game Width: " + gameSize_X + "px");
 	console.log("Game Height: " + gameSize_Y + "px");
 	console.log("Tile Size: " + tileSize + "x" + tileSize + "px");
 	console.log("Starting Position: " + startXY[0] + "x " + startXY[1] + "y");
+	console.log("---- End New Game ----");
+
 }

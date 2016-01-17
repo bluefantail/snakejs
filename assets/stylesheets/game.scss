@@ -3,9 +3,9 @@
 // CONFIG
 // Game
 
-$tile-size: 8px;
-$game-width: 60;
-$game-height: 60;
+$tile-size: 10px;
+$game-width: 52;
+$game-height: 52;
 
 // Colours
 
@@ -86,18 +86,27 @@ body>div>div{
 	float: left;
 	margin-right: 1rem;
 	position: relative;
+	overflow: hidden;
 }
 .snake-bit,
 .snake-sample{
 	background: green;
 	width: $tile-size;
 	height: $tile-size;
-	float: left;
 	color: green;
 	font-size: 6px;
 	line-height: 10px;
 	text-align: center;
 	font-weight: 400;
+	overflow: hidden;
+	position: absolute;
+	@include no_select;
+}
+.food{
+	background: #CE0049;
+	width: $tile-size;
+	height: $tile-size;
+	border-radius: 50%;
 	overflow: hidden;
 	position: absolute;
 	@include no_select;
@@ -113,11 +122,13 @@ body>div>div{
 #controls{
 	float: left;
 }
-#score{
+#score-board{
 	clear: both;
 	float: left;
 	display: block;
 	padding: 1rem 0 1rem 0;
+	font-size: 2rem;
+	font-weight: 700;
 }
 
 
