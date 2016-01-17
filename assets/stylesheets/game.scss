@@ -130,6 +130,17 @@ body>div>div{
 	font-size: 2rem;
 	font-weight: 700;
 }
+#message-board{
+	& i{
+		color: #777;
+	}
+	& b{
+	}
+	& b.red{
+		color: red !important;
+		font-weight: normal;
+	}
+}
 
 
 // Buttons

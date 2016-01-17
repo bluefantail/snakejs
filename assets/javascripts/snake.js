@@ -7,8 +7,10 @@ var	foodTile = '<div class="food"></div>'; // Define a Food Tile
 
 var game = document.querySelector('#game'); // Set the game object
 var tile = document.querySelector('.snake-sample'); // Set a sample tile
-var messages = document.querySelector('#messages');
+var messageBoard = document.querySelector('#message-board');
 var scoreBoard = document.querySelector('#score-board');
+
+messageBoard.innerHTML = "<i>Press any key to start.</i>"; // Set initial message
 
 // Set the size of a tile
 var tileSize = parseInt(getComputedStyle(tile).height, 10);
@@ -64,7 +66,7 @@ function new_game() {
 	
 	game.innerHTML = ""; // Clear game object of all elements
 	scoreBoard.innerHTML = ""; // Clear score and set placeholder
-	messages.innerHTML = "Snake so hungry."; // Clear messages and set placeholder
+	messageBoard.innerHTML = 'Snake so <b class="red">hungry<b>.'; // No score message 
 
 	var food;
 	var	foodXY;
@@ -73,7 +75,7 @@ function new_game() {
 	// Return all the Snake pieces as an object
 	function get_snake() {
 		snake = document.querySelectorAll('.snake-bit'); // Get all the snake bits
-		snakeHead = snake[0] // Get just the snakes head
+		snakeHead = snake[0]; // Get just the snakes head
 		headXY = [parseInt(snakeHead.style.left, 10), parseInt(snakeHead.style.top, 10)]; // Current head position
 	}
 	function unpack_snake_bits() {
@@ -108,6 +110,28 @@ function new_game() {
 		score++; // Increment the score
 		scoreBoard.innerHTML = "" + score; // Update the score
 	}
+	function update_messages() {
+		// Use shouldGrow to determine if the score is changing
+		if (shouldGrow == true) {
+			// Display messages as score changes
+			switch (score){
+				case 0:
+					break;
+				case 1:
+					messageBoard.innerHTML = "Yum";
+					break;
+				case 2:
+					messageBoard.innerHTML = "Yum yum";
+					break;	
+				case 3:
+					messageBoard.innerHTML = "Yum yum yum";
+					break;	
+				case 4:
+					messageBoard.innerHTML = "<i> Greuohglebloughough ... </i> This just isn't doing it.";
+					break;	
+			}
+		}
+	}
 	function move(snake){
 		get_snake(); // Get the new snake
 		switch (direction){
@@ -129,29 +153,34 @@ function new_game() {
 				break;
 		}
 
-		//Build the new snake
-		unpack_snake_bits(); // Get all the snake pieces
-		// Cut the tail off if the snake didn't grow	
+		// Check for Food collisions
+		if (headXY[0] == foodXY[0] && headXY[1] == foodXY[1]) shouldGrow = true; // Grow if snake ate food
+		
+		unpack_snake_bits(); // Get all the snake pieces	
+		
+		// If there was a food collision, do some stuff, otherwise just update the snake position
 		if (shouldGrow) {
-			game.insertAdjacentHTML('beforeend', snakeTile); //
+			food.remove(0); //remove the food
+			food = false;
+
+			//Build the new snake
+			game.insertAdjacentHTML('beforeend', snakeTile);
 			snakeBits.unshift(headXY); // Add the head
 			get_snake();
 			update_snake_position();
+			
+			// Update scores and messages
 			update_score();
-			shouldGrow = false;
+			update_messages(); // Will only fire message updates where shouldGrow is true
+			
+			shouldGrow = false; // Stop snake growing
 		}else{
-			snakeBits.pop();
+			snakeBits.pop(); // Remove Tail
 			snakeBits.unshift(headXY); // Add the head
-			update_snake_position();
+			update_snake_position(); // Update the snake position
 		}		
 
-		// Check for Food collisions
-		get_snake(); // Get new snake
-		if (headXY[0] == foodXY[0] && headXY[1] == foodXY[1]) shouldGrow = true; // Grow if snake ate food
-
-
-		console.log("Snake length: " + snake.length);
-
+		
 	}
 	// END FUNCTIONS
 
@@ -172,6 +201,7 @@ function new_game() {
 	
 	// Main Game Loop
 	var timer = window.setInterval(function(){
+		update_messages();
 		spawn_food();
 		move(snake);
 	}, gameSpeed);
