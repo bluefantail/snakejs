@@ -36,7 +36,7 @@ A few things can be changed to modify snakejs
 
 ### Styles
 
-Config at the top of snake.scss contains variables to modify sizes and colours.
+Config at the top of [snake.scss](assets/stylesheets/snake.scss) contains variables to modify sizes and colours.
 
 Use `$tile-size` to set the size of a tile. 
 
@@ -60,7 +60,7 @@ $snake: green;
 
 ### Game Variables
 
-Set the initial snake length, and game speed with these at the top of snake.js
+Set the initial snake length, and game speed with these at the top of [snake.js](assets/javascripts/snake.js)
 ```
 var startLength = 6; // Starting snake length
 var gameSpeed = 60; // Set the game movement speed in milliseconds
