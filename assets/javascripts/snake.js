@@ -4,6 +4,7 @@ var direction = "right"; // Set the default direction
 var startLength = 5; // Starting snake length
 var snakeTile = '<div class="snake-bit"></div>'; // Define a Snake Tile
 var	foodTile = '<div class="food"></div>'; // Define a Food Tile
+var eyes = '<div><div></div><div></div></div>'
 
 var game = document.querySelector('#game'); // Set the game object
 var tile = document.querySelector('.snake-sample'); // Set a sample tile
@@ -88,6 +89,7 @@ function new_game() {
 	function update_xy(item, newXY){
 		item.style.left = newXY[0] + "px"; // Update x
 		item.style.top = newXY[1] + "px"; // Update y
+		item.setAttribute('id', ''); // Reset each bit to an ordinary one
 	}
 	function update_snake_position() {
 		bit = 0;
@@ -178,9 +180,15 @@ function new_game() {
 			snakeBits.pop(); // Remove Tail
 			snakeBits.unshift(headXY); // Add the head
 			update_snake_position(); // Update the snake position
-		}		
+		}
 
-		
+		// Add eyes to snake head
+		get_snake();
+		while (snake[0].firstChild) {
+			snake[0].removeChild(snake[0].firstChild);
+		}
+		snake[0].setAttribute('id', 'head'); // Set snakes head tile
+		snake[0].insertAdjacentHTML('afterbegin', '<div id="snake-head-' + direction + '">' + eyes + '</div>'); 	
 	}
 	// END FUNCTIONS
 
@@ -201,9 +209,11 @@ function new_game() {
 	
 	// Main Game Loop
 	var timer = window.setInterval(function(){
+
 		update_messages();
 		spawn_food();
 		move(snake);
+	
 	}, gameSpeed);
 
 	console.log("---- New Game ----");
@@ -212,5 +222,4 @@ function new_game() {
 	console.log("Tile Size: " + tileSize + "x" + tileSize + "px");
 	console.log("Starting Position: " + startXY[0] + "x " + startXY[1] + "y");
 	console.log("---- End New Game ----");
-
 }

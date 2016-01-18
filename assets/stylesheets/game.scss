@@ -3,13 +3,15 @@
 // CONFIG
 // Game
 
-$tile-size: 10px;
-$game-width: 52;
-$game-height: 52;
+$tile-size: 10px; //10
+$game-width: 52; //52
+$game-height: 52; //52
 
 // Colours
 
 $blue: #0076E3;
+$food: #CE0049;
+$snake: green;
 
 // END CONFIG
 
@@ -48,6 +50,15 @@ body{
 		all $duration linear;
 	transition: 
 		all $duration linear;
+}
+
+@mixin rotate($angle: 0){
+	// Rotates a div by specified angle 
+	-webkit-transform:rotate(#{$angle}deg);
+	-moz-transform:rotate(#{$angle}deg);
+	-ms-transform:rotate(#{$angle}deg);
+	-o-transform:rotate(#{$angle}deg);
+	transform:rotate(#{$angle}deg);
 }
 
 .animate{
@@ -90,10 +101,10 @@ body>div>div{
 }
 .snake-bit,
 .snake-sample{
-	background: green;
+	background: $snake;
 	width: $tile-size;
 	height: $tile-size;
-	color: green;
+	color: $snake;
 	font-size: 6px;
 	line-height: 10px;
 	text-align: center;
@@ -103,7 +114,7 @@ body>div>div{
 	@include no_select;
 }
 .food{
-	background: #CE0049;
+	background: $food;
 	width: $tile-size;
 	height: $tile-size;
 	border-radius: 50%;
@@ -159,4 +170,41 @@ body>div>div{
 	
 }
 #new-game{
+}
+
+#snake-head-right,
+#snake-head-left,
+#snake-head-down,
+#snake-head-up,{
+	background: $snake;
+	text-align: center;
+	line-height: 100%;
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	& div{
+		width: 50%;
+		height: 100%;
+		float: right;
+		& div{
+			border: ($tile-size * .15) solid $snake; // Size of the snakes eyes
+			box-sizing: border-box;
+			background: lighten($snake, 30%);
+			float: left;
+			height: 50%;
+			width: 100%;
+		}
+	} 
+}
+#snake-head-right{
+	@include rotate(0);
+}
+#snake-head-left{
+	@include rotate(180);
+}
+#snake-head-down{
+	@include rotate(90);
+}
+#snake-head-up{
+	@include rotate(270);
 }
