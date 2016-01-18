@@ -39,7 +39,9 @@ A few things can be changed to modify snakejs
 Config at the top of snake.scss contains variables to modify sizes and colours.
 
 Use `$tile-size` to set the size of a tile. 
+
 `$game-width` and `$game-height` will then multiply with `$tile-size` to produce the grid.
+
 Eg. `$tile-size: 10px;` and `$game-width: 50;`, `$game-height: 50;`, will produce a 500px x 500px grid with 10px x 10px tiles.   
 ```
 // Game
