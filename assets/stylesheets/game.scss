@@ -1,23 +1,18 @@
 ---
 ---
-// CONFIG
+/* CONFIG */
 // Game
-
-$tile-size: 10px; //10
-$game-width: 52; //52
-$game-height: 52; //52
+$tile-size: 12px; //10
+$game-width: 45; //52
+$game-height: 45; //52
 
 // Colours
-
 $blue: #0076E3;
 $food: #CE0049;
 $snake: green;
-
-// END CONFIG
-
+/* END CONFIG */
 
 // Calculations
-
 $light-blue: lighten($blue, 10%);
 $game-window-width: $tile-size * $game-width;
 $game-window-height: $tile-size * $game-height;
@@ -40,16 +35,24 @@ body{
   	-ms-user-select: none;
 }
 
-@mixin animate($duration: .06s){		
+@mixin animate($duration: 5s){		
 	// Animates all properties of an object 					
 	-webkit-transition:
-		all $duration linear;
+		background $duration ease-in-out,
+		opacity $duration ease-in-out,
+		border $duration ease-in-out;
 	-moz-transition: 
-		all $duration linear;
+		background $duration ease-in-out,
+		opacity $duration ease-in-out,
+		border $duration ease-in-out;
 	-o-transition: 
-		all $duration linear;
+		background $duration ease-in-out,
+		opacity $duration ease-in-out,
+		border $duration ease-in-out;
 	transition: 
-		all $duration linear;
+		background $duration ease-in-out,
+		opacity $duration ease-in-out,
+		border $duration ease-in-out;
 }
 
 @mixin rotate($angle: 0){
@@ -120,7 +123,12 @@ body>div>div{
 	border-radius: 50%;
 	overflow: hidden;
 	position: absolute;
+	opacity: 1;
 	@include no_select;
+	@include animate;
+}
+.invisible{
+	opacity: 0;
 }
 .hide{
 	opacity: 0;
@@ -151,6 +159,9 @@ body>div>div{
 		color: red !important;
 		font-weight: normal;
 	}
+	& b.green{
+		color: lighten($snake, 5%) !important;
+	}
 }
 
 
@@ -172,11 +183,14 @@ body>div>div{
 #new-game{
 }
 
+#head{
+	z-index: 5;
+}
 #snake-head-right,
 #snake-head-left,
 #snake-head-down,
 #snake-head-up,{
-	background: $snake;
+	background: inherit;
 	text-align: center;
 	line-height: 100%;
 	width: 100%;
