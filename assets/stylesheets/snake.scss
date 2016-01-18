@@ -23,10 +23,11 @@ html, body{
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	box-sizing: border-box;
 }
 body{
+	position: fixed;
 	display: table;
-	overflow: hidden;
 }
 
 @mixin no_select{
@@ -86,12 +87,15 @@ p{
 body>div{
 	display: table-cell;
 	vertical-align: middle;
-	padding: 0 2rem 0 2rem;
+	/*padding: 0 2rem 0 2rem;*/
+	margin: 0;
+	box-sizing: border-box;
 }
 body>div>div{
 	width: 100%;
 	max-width: 1200px;
 	margin: 0px auto;
+	box-sizing: border-box;
 }
 #game{
 	width: $game-window-width;
