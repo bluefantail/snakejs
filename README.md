@@ -6,6 +6,8 @@ snake js is a simple snake-style game written purely in javascript, for fun. It'
 
 For ease of development and testing, I've bundled it with a gemfile containing jekyll so people can get it running in a browser quickly. 
 
+[View Demo](bluefantail.github.com/snakejs)
+
 # Installation
 
 Make sure you have a working version of Ruby installed, with the Bundler gem.

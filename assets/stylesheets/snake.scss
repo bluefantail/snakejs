@@ -93,7 +93,7 @@ body>div{
 }
 body>div>div{
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1000px;
 	margin: 0px auto;
 	box-sizing: border-box;
 }
@@ -167,7 +167,10 @@ body>div>div{
 		color: lighten($snake, 5%) !important;
 	}
 }
-
+.github{
+	float: left;
+	clear: left;
+}
 
 // Buttons
 .button{
